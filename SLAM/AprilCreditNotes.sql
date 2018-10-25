@@ -1,0 +1,57 @@
+use demo;
+DECLARE @CreditNotes TABLE(Id INT identity(1,1), SageRef VARCHAR(3), order_no VARCHAR(20), line_type VARCHAR(1), ProductCode VARCHAR(20), Val VARCHAR(10), Quantity VARCHAR(10), defDate VARCHAR(12))
+
+INSERT INTO @CreditNotes
+SELECT		LTRIM(RTRIM(h.customer)), LTRIM(RTRIM(d.order_no)), LTRIM(RTRIM(line_type)), LTRIM(RTRIM(product)), net_price, order_qty*-1, 
+			RIGHT(CAST(CONVERT(date,h.date_entered, 1) AS  VARCHAR(10)),2)+'/'+SUBSTRING(CAST(CONVERT(date,h.date_entered, 1) AS  VARCHAR(10)),6,2)+'/'+SUBSTRING(CAST(CONVERT(date,h.date_entered, 1) AS  VARCHAR(10)),3,2)--'27/11/17' CreditNoteDate
+FROM		slam.scheme.opheadm h
+inner join	slam.scheme.opdetm d 
+on			h.order_no = d.order_no
+where		invoice_no in ('OP/I026162','OP/I026183','OP/I026186','OP/I026208','OP/I026209','OP/I026235','OP/I026257','OP/I026272','OP/I026289','OP/I026291','OP/I026297','OP/I026298','OP/I026301','OP/I026312','OP/I026321','OP/I026323','OP/I026325','OP/I026329','OP/I026339','OP/I026341','OP/I026348','OP/I026352','OP/I026361','OP/I026369','OP/I026370','OP/I026382','OP/I026384','OP/I026390','OP/I026395','OP/I026407','OP/I026416','OP/I026418','OP/I026424','OP/I026435','OP/I026437','OP/I026444','OP/I026449','OP/I026460','OP/I026469','OP/I026471','OP/I026476','OP/I026477','OP/I026488','OP/I026495','OP/I026525','OP/I026544','OP/I026576','OP/I026590','OP/I026596','OP/I026598','OP/I026647','OP/I026649','OP/I026699','OP/I026701','OP/I026702','OP/I026741','OP/I026743','OP/I026793','OP/I026795','OP/I026796','OP/I026848','OP/I026850','OP/I026851','OP/I026905','OP/I026907','OP/I026955','OP/I026957','OP/I026989','OP/I027007','OP/I027009','OP/I027043','OP/I027060','OP/I027071','OP/I027092','OP/I027105','OP/I027107','OP/I027108','OP/I027160','OP/I027162','OP/I027163','OP/I026479','OP/I026535','OP/I026585','OP/I026639','OP/I026691','OP/I026736','OP/I026784','OP/I026840','OP/I026898','OP/I026947','OP/I027150','OP/I026999','OP/I027053','OP/I027099')
+AND			d.product = 'GENVOUCHDISCOUNT'
+order by	h.invoice_no
+
+
+DECLARE @DataHeader TABLE (Id INT IDENTITY(1,1), DATASTRING VARCHAR(MAX))
+DECLARE @Value FLOAT
+DECLARE @Row INT = 1, @Rows INT
+DECLARE @NextCNNumber INT = (SELECT TOP 1 KeyValue FROM	VapeConnectTest.dbo.SYSSettings WHERE		KeyRef = 'IMPNXBRCNNUM')
+
+SET @Rows = (SELECT COUNT(1) FROM @CreditNotes)
+WHILE @Row <= @Rows
+BEGIN	
+		INSERT INTO @DataHeader
+		SELECT '00|SRNXY|SOCREATE|Credit Notes|'
+		UNION
+		SELECT		'03|0|=CNA'+REPLACE(STR(@NextCNNumber+@Row, 5), SPACE(1), '0')+'D|3|'+SageRef+'|12|'+defDate+'|13|'+defDate+'|14|'+defDate+'|15|'+defDate+'|16|'+defDate+'|24|4|25|N|26|N|32|0|34|0|35|0|36|0|37|0|38|0|39|0|41|N|45|'+CAST(1 AS varchar(4))+'|46|N|85|0|86|0|87|0|'			
+		FROM		@CreditNotes
+		WHERE		Id = @Row	
+		union
+		SELECT '04|0|=CNA'+REPLACE(STR(@NextCNNumber+@Row, 5), SPACE(1), '0')+'D|2|'  + REPLACE(STR(CAST(1 AS VARCHAR(5)), 4), SPACE(1), ' ')+'|3|'+ProductCode+'|4|'+
+			CASE WHEN ProductCode LIKE	'GEN%' THEN 'S|5|' else 'P|5|SL' END +'|9||20|'+Quantity+'|21|'+Quantity+'|22|'+Quantity+'|24|' + CAST(Val AS VARCHAR(10)) + '|25|0|30|N|'
+		FROM	@CreditNotes
+		WHERE	Id = @Row
+					
+		SET @Row = @Row + 1
+END
+
+UPDATE 	VapeConnectTest.dbo.SYSSettings  
+SET		KeyValue = @NextCNNumber+@Row 
+WHERE	KeyRef = 'IMPNXBRCNNUM' 
+AND		1=1
+
+SELECT		@NextCNNumber+@Row 
+
+SELECT DATASTRING
+FROM @DataHeader
+
+RETURN 
+SELECT		*
+FROM		slam.scheme.opheadm h WITH(NOLOCK)
+INNER JOIN 	slam.scheme.opdetm d WITH(NOLOCK)
+ON			h.order_no = d.order_no
+WHERE		h.order_no = 'CNA09232D'
+/*
+£14,780.80
+£17,736.96
+*/

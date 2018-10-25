@@ -1,0 +1,2 @@
+select * from scheme.stquem where quantity > 0 and bin_number not like 'UDG%' and warehouse = 'FG' and lot_number in
+(select recon.LotNumber from Integrate.dbo.FullStockRecon recon where recon.SKU = scheme.stquem.prod_code)

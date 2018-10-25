@@ -1,0 +1,1 @@
+DBCC CHECKIDENT  (WorkCentres, RESEED, 0)

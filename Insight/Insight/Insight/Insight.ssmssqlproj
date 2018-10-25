@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<SqlWorkbenchSqlProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Insight">
+  <Items>
+    <LogicalFolder Name="Connections" Type="2" Sorted="true">
+      <Items>
+        <ConnectionNode Name="trsagev3d1:THORNTONROSS\DanMcGregor">
+          <Created>2014-11-11T13:59:06.3322377+00:00</Created>
+          <Type>SQL</Type>
+          <Server>trsagev3d1</Server>
+          <UserName />
+          <Authentication>Windows Authentication</Authentication>
+          <InitialDB />
+          <LoginTimeout>15</LoginTimeout>
+          <ExecutionTimeout>0</ExecutionTimeout>
+          <ConnectionProtocol>NotSpecified</ConnectionProtocol>
+          <ApplicationName />
+        </ConnectionNode>
+        <ConnectionNode Name="trservsql\timeattend:THORNTONROSS\DanMcGregor">
+          <Created>2014-11-11T13:59:48.6974738+00:00</Created>
+          <Type>SQL</Type>
+          <Server>trservsql\timeattend</Server>
+          <UserName />
+          <Authentication>Windows Authentication</Authentication>
+          <InitialDB />
+          <LoginTimeout>15</LoginTimeout>
+          <ExecutionTimeout>0</ExecutionTimeout>
+          <ConnectionProtocol>NotSpecified</ConnectionProtocol>
+          <ApplicationName />
+        </ConnectionNode>
+      </Items>
+    </LogicalFolder>
+    <LogicalFolder Name="Queries" Type="0" Sorted="true">
+      <Items>
+        <FileNode Name="db restore.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:trsagev3d1:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>trsagev3d1</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>db restore.sql</FullPath>
+        </FileNode>
+        <FileNode Name="EmpLogOuts.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:trsagev3d1:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>trsagev3d1</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>EmpLogOuts.sql</FullPath>
+        </FileNode>
+        <FileNode Name="GetLineForWorkOrder.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:trsagev3d1:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>trsagev3d1</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>GetLineForWorkOrder.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Job.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:trsagev3d1:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>trsagev3d1</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Job.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Reworks.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:trsagev3d1:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>trsagev3d1</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Reworks.sql</FullPath>
+        </FileNode>
+        <FileNode Name="SQLQuery2.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:trservsql\timeattend:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>trservsql\timeattend</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>SQLQuery2.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Who Is logged In Where.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:trsagev3d1:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>trsagev3d1</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Who Is logged In Where.sql</FullPath>
+        </FileNode>
+      </Items>
+    </LogicalFolder>
+    <LogicalFolder Name="Miscellaneous" Type="3" Sorted="true">
+      <Items>
+        <FileNode Name="UserFromtms">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>UserFromtms</FullPath>
+        </FileNode>
+      </Items>
+    </LogicalFolder>
+  </Items>
+</SqlWorkbenchSqlProject>
