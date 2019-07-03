@@ -1,33 +1,35 @@
 use slam
 GO
-UPDATE 	demo.scheme.opheadm  SET status = 6 WHERE	order_no IN ('SB034666')
-SELECT		shipper_code1, shipper_code2, shipper_code3, status, h.* FROM		slam.scheme.opheadm h WITH(NOLOCK) WHERE		h.order_no IN ('SB034666')
-SELECT		d.* FROM		slam.scheme.opdetm d WITH(NOLOCK) 
-WHERE		d.order_no IN ('SB034666')
-ORDER BY	product
+--UPDATE 	slam.scheme.opheadm  SET status = 3 WHERE	order_no IN ('SB035851')
+--DELETE FROM	CreditStopBackOrders WHERE		1=1
 
-DELETE FROM	CreditStopBackOrders WHERE		1=1
+DECLARE @OrderNo VARCHAR(20) = 'SB039960'
+SELECT		h.order_no, h.customer,h.date_entered, h.status, LTRIM(RTRIM(d.product)) AS product,order_line_status, d.order_qty, allocated_qty, despatched_qty, h.shipper_code1, shipper_code2, shipper_code3  
+FROM		slam.scheme.opheadm h WITH(NOLOCK)
+INNER JOIN 	slam.scheme.opdetm d WITH(NOLOCK)
+ON			h.order_no = d.order_no
+WHERE		h.order_no IN (@OrderNo)
+AND			d.order_line_status != 'D'
 
 INSERT INTO CreditStopBackOrders
 SELECT		h.order_no, h.customer,h.date_entered, LTRIM(RTRIM(d.product)) AS product,order_line_status, d.order_qty, allocated_qty, despatched_qty, h.shipper_code1, shipper_code2, shipper_code3  
 FROM		slam.scheme.opheadm h WITH(NOLOCK)
 INNER JOIN 	slam.scheme.opdetm d WITH(NOLOCK)
 ON			h.order_no = d.order_no
-WHERE		d.order_line_status = 'D'
-AND			h.customer = '1C5'
-AND			date_entered = '2018-10-16'
+WHERE		h.order_no IN (@OrderNo)
+
 SELECT	*	
 FROM		CreditStopBackOrders
-WHERE		order_no = 'SB034716'
+WHERE		order_no = @OrderNo
 
 
 -- CLEAR SHIPPER DATA
 UPDATE 		slam.scheme.opheadm 
-SET			shipper_code1 = '111.98', shipper_code2 = '179.00', shipper_code3 = ''
-WHERE		order_no IN ('SB034716')
-
+SET			shipper_code1 = '', shipper_code2 = '', shipper_code3 = ''
+WHERE		order_no IN (@OrderNo)
+RETURN
 --- DO SOMETHING ON	SAGE, AGAINST THE ORDER...!
-SB034666
+
 -- PUT SHIPPER DATA BACK
 UPDATE 		h
 SET			h.shipper_code1 = c.shipper_code1, 
@@ -36,7 +38,7 @@ SET			h.shipper_code1 = c.shipper_code1,
 FROM		slam.scheme.opheadm h
 INNER JOIN 	CreditStopBackOrders c
 ON			h.order_no = c.order_no
-WHERE		h.order_no IN ('SB034716')
+WHERE		h.order_no IN ('SB039960')
 
 /*
 SELECT	*
@@ -50,7 +52,7 @@ UPDATE 	[dbo].[SYSTaskSchedule] SET RunTime = '21:40:00.0000000' ,NextRun ='2017
 
 
 SELECT	*
-FROM		scheme.stallocm WHERE		order_no = 'SB034666'
+FROM		scheme.stallocm WHERE		order_no = 'SB039960'
 
 
 SELECT	*
@@ -60,11 +62,14 @@ AND	date_entered = '2017-11-26'
 
 
 UPDATE 	slam.scheme.opheadm 
-SET		status = 6
-WHERE	order_no = 'SB034666'
+SET		status = 3
+WHERE	order_no = 'SB039960'
 
+/* Supersession data */
+SELECT *
+FROM	 slam.scheme.stockm WITH(NOLOCK)
+WHERE	product = '030042'
 
-
-SELECT	*
-FROM		TRConnect.dbo.ENLocations
-ORDER BY	ENLocationName
+UPDATE 	slam.scheme.stockm  SET supersession = 'SL030562'
+WHERE	product = '030042'
+--SL030562              

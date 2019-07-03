@@ -1,6 +1,6 @@
-use demo;
+--use demo;
 -- THIS SCRIPT SEARCH ALL TABLES IN A DB, FOR A GIVEN VALUE OF A COLUMN
-DECLARE @SearchStr nvarchar(100) = 'CANT RESELL'
+DECLARE @SearchStr nvarchar(100) = 'chris.carr@blendandbottle.com'
 
 BEGIN
 
