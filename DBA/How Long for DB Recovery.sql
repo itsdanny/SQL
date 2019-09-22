@@ -4,10 +4,10 @@ use Insight
 SELECT database_id, name, user_access_desc, is_read_only, state_desc, recovery_model_desc FROM sys.databases where name in ('syslive')
 
 -- This runs (very quick) to tell you approx how long the recovery will take
-DECLARE @DBName VARCHAR(64) = 'syslive'
+DECLARE @DBName VARCHAR(64) = 'demo'
 DECLARE @ErrorLog AS TABLE([LogDate] datetime, [ProcessInfo] VARCHAR(64), [Text] VARCHAR(MAX)) 
 INSERT INTO @ErrorLog
-EXEC sys.xp_readerrorlog 0, 1, null, 'syslive',NULL, NULL, 'DESC'
+EXEC sys.xp_readerrorlog 0, 1, null, 'demo',NULL, NULL, 'DESC'
  select * from @ErrorLog where ProcessInfo <> 'Logon' and Text like '%syslive%'
 
 SELECT		[LogDate], SUBSTRING([Text], CHARINDEX(') is ', [Text]) + 4,CHARINDEX(' complete (', [Text]) - CHARINDEX(') is ', [Text]) - 4) AS PercentComplete
@@ -26,7 +26,7 @@ GO
 
 EXEC sys.xp_readerrorlog 0, 1, null, 'syslive',NULL, NULL, 'DESC'
 
-RESTORE DATABASE syslive WITH RECOVERY
+RESTORE DATABASE demo WITH RECOVERY
 
 select * from syslive.scheme.stockm
 USE master
